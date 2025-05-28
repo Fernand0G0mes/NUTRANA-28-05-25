@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
+// Ícones Font Awesome que você já estava a usar
 import { FaSyncAlt, FaMoon, FaPills, FaRobot, FaTachometerAlt, FaLeaf } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
-// Ícones do Feather Icons, incluindo os para o acordeão e botão "Saber Mais"
+// Ícones Feather Icons que são usados
 import { FiChevronRight, FiArrowRight, FiChevronDown, FiChevronUp } from "react-icons/fi"; 
 
 // Definição da interface para as vantagens (features)
@@ -28,28 +29,26 @@ function AccordionItem({ feature, isOpen, onClick, index }: AccordionItemProps) 
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index * 0.05 + 0.5 }}
-      layout // Anima mudanças de altura/layout
+      layout 
       className="bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200/70 mb-3"
     >
       <motion.button
         onClick={onClick}
         className="w-full flex items-center justify-between p-4 sm:p-5 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00C853] focus-visible:ring-offset-1"
         aria-expanded={isOpen}
-        whileHover={{ backgroundColor: 'rgba(240, 248, 245, 0.7)' }} // Um verde muito claro no hover (emerald-50)
+        whileHover={{ backgroundColor: 'rgba(240, 248, 245, 0.7)' }} 
         transition={{ duration: 0.2 }}
       >
         <div className="flex items-center space-x-3">
-          {/* Cores do ícone alinhadas com a paleta Verde Nutrana */}
           <span className={`p-2.5 rounded-lg transition-colors duration-300 text-lg
                           ${isOpen ? 'bg-[#00C853] text-white shadow-sm' : 'bg-emerald-50 text-[#00C853]'}`}>
             {feature.icon}
           </span>
           <span className={`font-semibold text-sm sm:text-base transition-colors duration-300
-                          ${isOpen ? 'text-[#00C853]' : 'text-[#1A2E27]'}`}> {/* Título ativo em Verde Nutrana */}
+                          ${isOpen ? 'text-[#00C853]' : 'text-[#1A2E27]'}`}>
             {feature.title}
           </span>
         </div>
-        {/* Setas com cores alinhadas */}
         {isOpen ? 
           <FiChevronUp className="w-5 h-5 text-[#00C853] transform transition-transform duration-300" /> :
           <FiChevronDown className="w-5 h-5 text-slate-500 transform transition-transform duration-300" />
@@ -80,6 +79,8 @@ function AccordionItem({ feature, isOpen, onClick, index }: AccordionItemProps) 
 }
 
 // Componente principal da Secção de Vantagens
+// Se o seu arquivo se chama FeatureCard.tsx, você pode renomear esta função para FeatureCard
+// ou manter FeatureSectionInteractive e exportá-la como default.
 export default function FeatureSectionInteractive() {
 
   const features: Feature[] = [
@@ -102,8 +103,8 @@ export default function FeatureSectionInteractive() {
   const phoneImageVariants = { hidden: { opacity: 0, scale: 0.85, y: 20 }, visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.7, delay: 0.3, type: "spring", stiffness: 120, damping: 15 } } };
   const featureSelectorVariants = { hidden: { opacity: 0, x: -20 }, visible: (i:number) => ({ opacity: 1, x: 0, transition: { duration: 0.4, delay: 0.5 + i * 0.1, ease: "circOut" } }) };
   const featureDetailVariantsDesktop = { initial: { opacity: 0, y: 15, scale: 0.98 }, animate: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.35, ease: "circOut" } }, exit: { opacity: 0, y: -15, scale: 0.98, transition: { duration: 0.25, ease: "circIn" } } };
-
-  // const router = useRouter(); // Descomente se o botão "Saber Más" precisar de navegação
+  
+  // const router = useRouter(); // Descomente se o botão "Saber Más" precisar de navegação e importe useRouter de 'next/navigation'
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-sky-50 via-slate-50 to-white flex flex-col items-center justify-center antialiased py-16 md:py-24">
@@ -128,7 +129,13 @@ export default function FeatureSectionInteractive() {
                 key={feature.id} custom={index} variants={featureSelectorVariants}
                 onClick={() => setActiveIndexDesktop(index)}
                 className={`w-full text-left p-4 rounded-xl transition-all duration-300 ease-in-out flex items-center space-x-3 transform focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-100 ${activeIndexDesktop === index ? 'bg-white shadow-xl scale-105 border-l-4 border-[#00C853]' : 'bg-white/70 hover:bg-white hover:shadow-lg'}`}
-                whileHover={{ scale: activeIndexDesktop === index ? 1.05 : 1.02, shadow: activeIndexDesktop === index ? "0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05)" : "0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)" }}
+                // CORREÇÃO APLICADA AQUI: shadow -> boxShadow
+                whileHover={{ 
+                  scale: activeIndexDesktop === index ? 1.05 : 1.02, 
+                  boxShadow: activeIndexDesktop === index 
+                             ? "0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05)" 
+                             : "0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)" 
+                }}
                 whileTap={{ scale: 0.98 }}
               >
                 <span className={`p-2.5 rounded-lg transition-colors duration-300 ${activeIndexDesktop === index ? 'bg-[#00C853] text-white shadow-sm' : 'bg-slate-200 text-[#00C853]'}`}>{feature.icon}</span>
@@ -148,7 +155,11 @@ export default function FeatureSectionInteractive() {
                    <h3 className="text-xl lg:text-2xl font-bold text-[#1A2E27] leading-tight">{activeFeatureDesktop.title}</h3>
                 </div>
                 <p className="text-slate-600 leading-relaxed text-sm sm:text-base">{activeFeatureDesktop.description}</p>
-                <motion.button whileHover={{scale: 1.03, x:2}} whileTap={{scale:0.97}} className="mt-6 inline-flex items-center text-sm font-semibold text-[#f7b801] hover:text-yellow-500 group" /* onClick={() => router.push('/mais-detalhes/' + activeFeatureDesktop.id)} */ >
+                <motion.button 
+                  whileHover={{scale: 1.03, x:2}} whileTap={{scale:0.97}} 
+                  className="mt-6 inline-flex items-center text-sm font-semibold text-[#f7b801] hover:text-yellow-500 group"
+                  // onClick={() => router.push('/mais-detalhes/' + activeFeatureDesktop.id)} // Exemplo de navegação, requer useRouter
+                >
                     Saber Más <FiArrowRight className="ml-1.5 w-4 h-4 transition-transform group-hover:translate-x-1"/>
                 </motion.button>
               </motion.div>
